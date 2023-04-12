@@ -7,15 +7,15 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-// Client nhập số từ bàn phím và gửi sang server
+// Client nhập từ bàn phím 
 
 int main(int argc, char *argv[])
 {
     char ip[9];
     strcpy(ip, argv[1]);
     int port = atoi(argv[2]);
-    printf("%s\n", ip);
-    printf("%d\n", port);
+    printf("IP: %s\n", ip);
+    printf("PORT: %d\n", port);
 
     int client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     
@@ -33,16 +33,21 @@ int main(int argc, char *argv[])
     }
 
     char buf[256];
-    while (1)
-    {
-        printf("Enter string:");
-        fgets(buf, sizeof(buf), stdin);
+    sprintf(buf, "new.txt");
+    FILE *f = fopen(buf, "wb");
+   
+    int ret1;
+    ret1 = recv(client, buf, sizeof(buf), 0);
+    fwrite(buf, 1, ret1, f);
+    printf("%s\n", buf);
+         
 
-        send(client, buf, strlen(buf), 0);
+    //client gui du lieu den server
+    char bufsend[128];
+    printf("Enter string:");
+    fgets(bufsend, sizeof(bufsend), stdin);
+    send(client, bufsend, strlen(bufsend), 0);
 
-        if (strncmp(buf, "exit", 4) == 0)
-            break;
-    }
-
+    fclose(f);
     close(client);
 }
