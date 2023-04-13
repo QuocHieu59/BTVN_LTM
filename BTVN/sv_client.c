@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <time.h>
 
 // Client nhập từ bàn phím 
 
@@ -51,12 +52,21 @@ int main(int argc, char *argv[])
     fgets(diemTrungBinh, 6, stdin);
     diemTrungBinh[strcspn(diemTrungBinh, "\n")] = '\0';
 
+    //current time
+    time_t rawtime;
+    struct tm * time_str;
+    time(&rawtime);
+    time_str = localtime(&rawtime); 
+
     // Đóng gói dữ liệu
-    char data[51];
-    snprintf(data, 51, "%s|%s|%s|%s", mssv, hoTen, ngaySinh, diemTrungBinh);
-
+    char data[123];
+    snprintf(data, sizeof(data), " %d-%d-%d %d:%d:%d %s %s %s %s", 
+            time_str->tm_mday, time_str->tm_mon + 1, time_str->tm_year + 1900,
+            time_str->tm_hour, time_str->tm_min , time_str->tm_sec, 
+            mssv, hoTen, ngaySinh, diemTrungBinh);
     send(client, data, strlen(data), 0);
-    printf("Sent: %s to Post %d\n", data, port);
+    printf("Sent: %s to Port %d\n", data, port);
+    
     close(client);
-
+    
 }
