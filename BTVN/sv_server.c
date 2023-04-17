@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     
     char bufget[128];
     FILE *f = fopen("sv_log.txt", "wb");
-    int retget = recv(client, bufget, sizeof(bufget), 0);
+    int retget = recv(client, bufget, strlen(bufget), 0);
     strcat(clientIP, bufget);
     if (retget <= 0) {printf("failed recv\n");}
     else { 
