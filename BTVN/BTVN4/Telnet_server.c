@@ -105,11 +105,12 @@ int main()
                 {
                     continue;
                 }
-                buf1[ret1] = 0;
+                char tmp[32];
+                buf1[ret1 - 1] = 0;
                 printf("Du lieu nhan tu %d: %s\n", client[i], buf1);
-                if(strncmp(buf1, "dir", 3) == 0) {
-                    //printf("Du lieu\n");
-                    system("dir > out.txt");
+                sprintf(tmp, "%s > out.txt", buf1);
+                    printf("%s\n", tmp);
+                    system(tmp);
                     FILE *fs = fopen("out.txt", "rb");
                     char bufsend[256];
                     int ret;
@@ -122,7 +123,7 @@ int main()
                     }
                     fclose(fs);
 
-                }
+                
             }
         }
         
